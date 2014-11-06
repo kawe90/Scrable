@@ -10,3 +10,168 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Scrabble {
+	
+	/**
+	* main-Methode: liest von der Standardeingabe ein und arbeitet die
+	* einegegebenen Befehle ab. Erzeugt entsprechende Ausgaben.
+	*/
+	public static void main(String[] args){
+		
+		Scanner sc = new Scanner(System.in);
+		
+		String eingabe = sc.next();
+		
+		//macht aus einem String ein char-Array
+		char[] charSet = eingabe.toCharArray(); 
+		
+		while(sc.hasNext()){
+			
+			String command = sc.next();
+			
+			if(command.equals("print")) {
+				System.out.println(Arrays.toString(charSet));
+			}
+			else if(command.equals("occurrences")) {
+				String s=sc.next();
+				char c=s.charAt(0);
+				System.out.println(occurrences(charSet,c));
+			}
+			else if(command.equals("moveleft")) {
+				String s=sc.next();
+				char c=s.charAt(0);
+				moveLeft(charSet,c);
+			}
+			else if(command.equals("distinct")) {
+				String s=sc.next();
+				System.out.println(distinct(s));
+			}
+			else if(command.equals("buildword")) {
+				String s=sc.next();
+				
+				System.out.println(buildWord(s,charSet));
+			}
+			//FILL IN
+			
+		}
+	}
+	
+	/**
+	* bewegt alle Vorkommnisse des Zeichens c im Array charSet ganz nach 
+	* links. Die Reihenfolge aller anderen Zeichen im Array ist danach 
+	* beliebig.
+	* @param charSet Das Array mit der Zeichenmenge
+	* @param c Alle Vorkommnisse dieses Zeichens sollen im Array ganz nach 
+	* links bewegt werden.
+	*/
+	public static void moveLeft(char[] charSet, char c) {
+	
+		int count=occurrences(charSet, c);
+		char[] nc= new char[charSet.length];
+		for(int i=0; i<count;i++){
+			nc[i]=c;	
+		}
+		
+		for(int k=0; k<charSet.length;k++){
+			if(charSet[k]!=c){
+				nc[count]=charSet[k];
+				count++;
+			}
+		}
+		for(int a=0;a<nc.length;a++){
+			charSet[a]=nc[a];		
+		}
+		
+	}
+	
+	/**
+	* liefert die Häufigkeit des angegebenen Zeichens c in der 
+	* Zeichenfolge charSet zurück
+	* @param charSet Das Array mit der Zeichenmenge
+	* @param c Alle Vorkommnisse dieses Zeichens werden gezählt
+	* @return Die Anzahl der Vorkommnisse
+	*/
+	public static int occurrences(char[] charSet, char c) {
+		
+		int count=0;
+		for(int i=0;i<charSet.length;i++){
+			if(charSet[i]==c){
+				count++;
+			}
+		}
+		return count; //REMOVE THIS LINE
+		
+	}
+	
+	
+	/**
+	* liefert die Häufigkeit des angegebenen Zeichens c im 
+	* String word
+	* @param word Eine Zeichenkette in der die Anzahl des angegebenen 
+	* Zeichens bestimmt wird
+	* @param c Alle Vorkommnisse dieses Zeichens werden gezählt
+	* @return Die Anzahl der Vorkommnisse
+	*/
+	public static int occurrences(String word, char c) {
+		
+		int count=0;
+		for(int i=0; i<word.length();i++){
+			if(word.charAt(i)==c){
+				count++;
+			}
+		}
+		return 0; //REMOVE THIS LINE
+		
+	}
+	
+	/**
+	* liefert einen String, der alle Zeichen enthält, die auch in word 
+	* vorkommen, jedoch keine Zeichen mehrfach enthält. Die Reihenfolge der 
+	* Zeichen ist beliebig.
+	* @param word Der Eingabestring
+	* @return Ein String in dem die Zeichen des Eingabestrings einmalig
+	* vorkommen.
+	*/
+	public static String distinct(String word) {
+	
+		String ns="";
+		char ch=' ';
+		for(int i=0; i<word.length();i++){
+			CharSequence s1=""+word.charAt(i);
+			if(!ns.contains(s1)){
+				ns+=""+word.charAt(i);
+				word.replace(word.charAt(i), ch);
+			}
+		}
+		return ns; //REMOVE THIS LINE
+		
+	}
+	
+	/**
+	* liefert einen boolean Wert der angibt, ob das als Parameter 
+	* angegebene Wort word aus den im Array from gespeicherten Zeichen
+	* gebildet werden kann (true) oder nicht (false).
+	* @param word Das zu bildende Wort
+	* @param from Aus den Zeichen dieses Arrays soll das Wort gebildet 
+	* werden
+	* @return true wenn das Wort gebildet werden kann, sonst false
+	*/
+	public static boolean buildWord(String word, char[] from) {
+		
+		for(int i=0; i<word.length();i++){
+			if(	occurrences(word,word.charAt(i))>=occurrences(from,word.charAt(i))){
+				return false;	
+			}
+				
+			
+		} return true; //REMOVE THIS LINE
+		
+	}
+	
+}
